@@ -103,13 +103,12 @@ create table DetalleCosmeticoPartida (
 	idUsuarioCosmetico int foreign key references UsuarioCosmetico(idUsuarioCosmetico) not null,
 )
 
-create table DetalleUsuarioPartida (
-	idDetUsuarioPartida int identity(1,1) primary key,
+create table DetallePartida (
+	idDetallePartida int identity(1,1) primary key,
 	idPartida int foreign key references Partida(idPartida),
-	idUsuario int foreign key references Usuario(idUsuario),
-	eliminaciones int not null,
-	tiempoEnPartida time not null
-	constraint CK_eliminaciones check(eliminaciones >= 0)
+	idAsesino int foreign key references Usuario(idUsuario),
+	idMuerto int foreign key references Usuario(idUsuario),
+	fechaAsesinato datetime
 )
 
 
