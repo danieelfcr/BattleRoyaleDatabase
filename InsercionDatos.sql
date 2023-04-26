@@ -48,5 +48,8 @@ INSERT INTO TipoSkin(nombre)
 VALUES ('Personaje'), ('Arma');
 
 -- Insertar tipo de partida
-INSERT INTO TipoSkin(nombre)
+INSERT INTO TipoPartida(nombre)
 VALUES ('Normal'), ('Fast'), ('Killer');
+
+--Insertar partidas
+
