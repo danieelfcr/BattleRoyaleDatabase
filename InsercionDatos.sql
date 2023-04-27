@@ -3,9 +3,9 @@ use BattleRoyale
 
 -- Insertar continentes
 INSERT INTO Continente (nombre)
-VALUES ('¡frica'), ('AmÈrica del Norte'), ('AmÈrica del Sur'), ('Asia'), ('Europa'), ('OceanÌa');
+VALUES ('√Åfrica'), ('Am√©rica del Norte'), ('Am√©rica del Sur'), ('Asia'), ('Europa'), ('Ocean√≠a');
 
--- Insertar paÌses
+-- Insertar pa√≠ses
 INSERT INTO Pais (nombre, idContinent)
 VALUES 
 ('Nigeria', 1),
@@ -14,24 +14,24 @@ VALUES
 ('China', 4),
 ('Francia', 5),
 ('Australia', 6),
-('Canad·', 2),
-('MÈxico', 2),
+('Canad√°', 2),
+('M√©xico', 2),
 ('Argentina', 3),
-('Per˙', 3),
-('JapÛn', 4),
+('Per√∫', 3),
+('Jap√≥n', 4),
 ('Corea del Sur', 4),
-('EspaÒa', 5),
+('Espa√±a', 5),
 ('Reino Unido', 5),
 ('Italia', 5),
 ('Alemania', 5),
 ('Rusia', 5),
 ('Nueva Zelanda', 6),
 ('Fiyi', 6),
-('Pap˙a Nueva Guinea', 6),
+('Pap√∫a Nueva Guinea', 6),
 ('India', 4),
 ('Indonesia', 4),
 ('Malasia', 4),
-('Sud·frica', 1),
+('Sud√°frica', 1),
 ('Egipto', 1),
 ('Kenia', 1),
 ('Colombia', 3),
@@ -39,9 +39,9 @@ VALUES
 ('Chile', 3),
 ('Guatemala', 3);
 
--- Insertar categorÌas
+-- Insertar categor√≠as
 INSERT INTO Categoria(nombre)
-VALUES ('Com˙n'), ('Raro'), ('Legendario');
+VALUES ('Com√∫n'), ('Raro'), ('Legendario');
 
 -- Insertar tipo de skin
 INSERT INTO TipoSkin(nombre)
@@ -1560,9 +1560,3 @@ INSERT INTO Partida (idPartida, fechaInicio, fechaFin, estado, idGanador, idTipo
 	('998', '2022-12-14 09:24:39', '2022-12-14 09:32:39', '0', '268', '2'),
 	('999', '2023-04-20 22:52:29', '2023-04-20 22:56:29', '0', '199', '3'),
 	('1000', '2023-02-09 16:19:20', '2023-02-09 16:28:20', '0', '362', '2');
-
-
--- InserciÛn de usuarios
-
-INSERT INTO Usuario (idUsuario, nickname, nombre1, nombre2, nombre3, apellido1, apellido2, email, contrasena, fechaNacimiento, fechaModificacion, estado, idPais) VALUES
-	
