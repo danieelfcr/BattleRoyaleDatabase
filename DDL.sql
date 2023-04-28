@@ -35,7 +35,7 @@ create table Cosmetico(
 	nombre varchar(50) not null,
 	precio decimal not null,
 	idCategoriaCosmetico int foreign key references CategoriaCosmetico(idCategoriaCosmetico) not null,
-	idTipoCosmetico int foreign key references TipoCosmetico(idTipoCosmetico) not null
+	idTipoCosmetico int foreign key references TipoCosmetico(idTipoCosmetico) not null,
 	constraint chk_precio check  (precio >= 0)
 )
 
