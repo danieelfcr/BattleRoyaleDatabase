@@ -105,10 +105,10 @@ create table DetalleCosmeticoPartida (
 
 create table DetallePartida (
 	idDetallePartida int identity(1,1) primary key,
-	idPartida int foreign key references Partida(idPartida),
+	idPartida int foreign key references Partida(idPartida) not null,
 	idAsesino int foreign key references Usuario(idUsuario),
-	idMuerto int foreign key references Usuario(idUsuario),
-	fechaAsesinato datetime
+	idMuerto int foreign key references Usuario(idUsuario) not null,
+	fechaAsesinato datetime not null
 )
 
 
