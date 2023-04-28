@@ -6,7 +6,7 @@ INSERT INTO Continente (nombre)
 VALUES ('África'), ('América del Norte'), ('América del Sur'), ('Asia'), ('Europa'), ('Oceanía');
 
 -- Insertar países
-INSERT INTO Pais (nombre, idContinent)
+INSERT INTO Pais (nombre, idContinente)
 VALUES 
 ('Nigeria', 1),
 ('Estados Unidos', 2),
@@ -40,11 +40,11 @@ VALUES
 ('Guatemala', 3);
 
 -- Insertar categorías
-INSERT INTO Categoria(nombre)
+INSERT INTO CategoriaCosmetico(nombre)
 VALUES ('Común'), ('Raro'), ('Legendario');
 
 -- Insertar tipo de skin
-INSERT INTO TipoSkin(nombre)
+INSERT INTO TipoCosmetico(nombre)
 VALUES ('Personaje'), ('Arma');
 
 -- Insertar tipo de partida
@@ -179,12 +179,12 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('mmedwell3f', 'Verene', 'Farlie', 'Morgen', 'Roulston', 'Medwell', 'mmedwell3f@wordpress.com', '5VtVvvxeB', '5/8/1988', '2/19/2023', '1', '19'),
 	('msprowell3g', 'Sondra', 'Stanton', 'Mildred', 'Riditch', 'Sprowell', 'msprowell3g@miitbeian.gov.cn', 'P5KnRreyb', '3/28/2006', '3/23/2023', '1', '27'),
 	('ksparry3h', 'Kalindi', 'Lucian', 'Keslie', 'Koppen', 'Sparry', 'ksparry3h@independent.co.uk', '8RKNPX2rx', '7/9/2007', '6/10/2022', '1', '28'),
-	('sohara3i', 'Tobye', 'Erina', 'Shayne', 'McCowan', 'O\'\'Hara', 'sohara3i@1688.com', '9RHUknfTP', '10/24/2002', '10/21/2022', '1', '7'),
+	('sohara3i', 'Tobye', 'Erina', 'Shayne', 'McCowan', 'Hara', 'sohara3i@1688.com', '9RHUknfTP', '10/24/2002', '10/21/2022', '1', '7'),
 	('zjansson3j', 'Isidro', 'Jamill', 'Zahara', 'Kerford', 'Jansson', 'zjansson3j@sun.com', 'fDJALXVfQ', '4/25/1996', '7/18/2022', '1', '14'),
 	('ggarken3k', 'Valeria', 'Viviyan', 'Gard', 'Coles', 'Garken', 'ggarken3k@nifty.com', 'afexcrgeL', '1/28/1987', '6/6/2022', '1', '14'),
 	('mmckeowon3l', 'Yalonda', 'Stacie', 'Merci', 'Monkeman', 'McKeowon', 'mmckeowon3l@histats.com', '4kXHKiPc3', '7/9/2006', '9/1/2022', '1', '19'),
 	('vgeorgeot3m', 'Risa', 'Katharyn', 'Vincenty', 'Manuello', 'Georgeot', 'vgeorgeot3m@ovh.net', '7pM9TxNdY', '7/27/2004', '9/1/2022', '1', '13'),
-	('hotierney3n', 'Teodor', 'Nixie', 'Hubey', 'Cumberledge', 'O\'\'Tierney', 'hotierney3n@google.ca', '4ESaH6Xdu', '6/12/1995', '8/15/2022', '1', '15'),
+	('hotierney3n', 'Teodor', 'Nixie', 'Hubey', 'Cumberledge', 'Tierney', 'hotierney3n@google.ca', '4ESaH6Xdu', '6/12/1995', '8/15/2022', '1', '15'),
 	('qgradon3o', 'Lauree', 'Demetris', 'Quinlan', 'Pick', 'Gradon', 'qgradon3o@microsoft.com', 'KR6qbH6WC', '2/15/1985', '12/11/2022', '1', '14'),
 	('thare3p', 'Kerk', 'Nathanil', 'Tiff', 'Ravilious', 'Hare', 'thare3p@cam.ac.uk', 'ikxPiVgct', '10/10/2002', '1/4/2023', '1', '8'),
 	('dmctrustie3q', 'Robbyn', 'Timofei', 'Dulci', 'Eastwood', 'McTrustie', 'dmctrustie3q@earthlink.net', 'Nrkq4NCQT', '12/24/2003', '2/26/2023', '1', '9'),
@@ -195,9 +195,9 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('dguerry3v', 'Chic', 'Tiebout', 'Daniella', 'Newlove', 'Guerry', 'dguerry3v@squidoo.com', 'PAxECgNRE', '12/4/1980', '3/24/2023', '1', '26'),
 	('ttookill3w', 'Ulrica', 'Townie', 'Tucky', 'Handlin', 'Tookill', 'ttookill3w@bbb.org', 'DCSL5jSXH', '5/24/2002', '11/8/2022', '1', '7'),
 	('ayearne3x', 'Lamar', 'Sawyere', 'Allegra', 'Simister', 'Yearne', 'ayearne3x@tinypic.com', '6znPMbn4q', '5/29/1987', '5/16/2022', '1', '19'),
-	('jmabb3y', 'Othella', 'Marthe', 'Justino', 'A\'\'field', 'Mabb', 'jmabb3y@adobe.com', 'kuFgEB7ea', '12/29/1981', '8/21/2022', '1', '29'),
-	('gsirman3z', 'Lezley', 'Laurette', 'Georgette', 'O\'\'Roan', 'Sirman', 'gsirman3z@unblog.fr', 'pG6jAAhfA', '4/28/2002', '3/9/2023', '1', '29'),
-	('dglas40', 'Ario', 'Amberly', 'Daron', 'D\'\'Agostino', 'Glas', 'dglas40@pen.io', 'VkeukM6Bj', '2/6/1982', '6/23/2022', '1', '20'),
+	('jmabb3y', 'Othella', 'Marthe', 'Justino', 'field', 'Mabb', 'jmabb3y@adobe.com', 'kuFgEB7ea', '12/29/1981', '8/21/2022', '1', '29'),
+	('gsirman3z', 'Lezley', 'Laurette', 'Georgette', 'Roan', 'Sirman', 'gsirman3z@unblog.fr', 'pG6jAAhfA', '4/28/2002', '3/9/2023', '1', '29'),
+	('dglas40', 'Ario', 'Amberly', 'Daron', 'Agostino', 'Glas', 'dglas40@pen.io', 'VkeukM6Bj', '2/6/1982', '6/23/2022', '1', '20'),
 	('nkilgrew41', 'Sunny', 'Gardy', 'Norry', 'Skill', 'Kilgrew', 'nkilgrew41@msu.edu', 'x8nkdPRkW', '3/7/1988', '9/25/2022', '1', '6'),
 	('rkivell42', 'Tobey', 'Sascha', 'Rayner', 'Learie', 'Kivell', 'rkivell42@usatoday.com', 'B6NG6WSmf', '11/8/1985', '7/6/2022', '1', '19'),
 	('dkelledy43', 'Millie', 'Elianore', 'Donnajean', 'Vise', 'Kelledy', 'dkelledy43@ft.com', 'xTKxrqmWS', '10/23/1982', '12/29/2022', '1', '30'),
@@ -341,14 +341,14 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('ajoel7x', 'Sherline', 'Cam', 'Alice', 'Ahmad', 'Joel', 'ajoel7x@drupal.org', 'zxagQxNpw', '4/7/1991', '6/23/2022', '1', '28'),
 	('csmoughton7y', 'Jodi', 'Cliff', 'Charlotta', 'Goodered', 'Smoughton', 'csmoughton7y@unicef.org', 'VMpf9LZ98', '1/5/1983', '11/27/2022', '1', '11'),
 	('pleblond7z', 'Rochette', 'Zarla', 'Patricio', 'MacVaugh', 'Le Blond', 'pleblond7z@hc360.com', 'BbakJr8HB', '6/12/1985', '4/1/2023', '1', '14'),
-	('oantonio80', 'Akim', 'Alden', 'Odelinda', 'O\'\'Kennavain', 'Antonio', 'oantonio80@jugem.jp', 'wjWU6DVRK', '3/10/2006', '3/20/2023', '1', '20'),
+	('oantonio80', 'Akim', 'Alden', 'Odelinda', 'Kennavain', 'Antonio', 'oantonio80@jugem.jp', 'wjWU6DVRK', '3/10/2006', '3/20/2023', '1', '20'),
 	('jlangley81', 'Jedidiah', 'Ezri', 'Julee', 'Flippini', 'Langley', 'jlangley81@dailymotion.com', 'd6DVyLGx8', '4/27/1985', '3/1/2023', '1', '25'),
 	('rostridge82', 'Orelie', 'Ruthann', 'Ricard', 'Leming', 'Ostridge', 'rostridge82@omniture.com', 'apqwbQy9m', '5/30/1997', '4/16/2023', '1', '4'),
 	('bwarlton83', 'Dorrie', 'Crissie', 'Bar', 'Geratt', 'Warlton', 'bwarlton83@berkeley.edu', '2P6WVV7GB', '8/1/1986', '8/19/2022', '1', '2'),
 	('rredgrove84', 'Trumaine', 'Caddric', 'Rebbecca', 'Bogies', 'Redgrove', 'rredgrove84@topsy.com', 'cbHgmBdfK', '6/5/1986', '6/8/2022', '1', '3'),
 	('afenkel85', 'Jamison', 'Fielding', 'Aprilette', 'Blinman', 'Fenkel', 'afenkel85@ning.com', 'QuyawX39J', '12/24/1991', '8/14/2022', '1', '27'),
 	('sjohnston86', 'Carmina', 'Bartel', 'Shel', 'Fallow', 'Johnston', 'sjohnston86@godaddy.com', 'N2J2AQxhc', '2/26/2004', '9/20/2022', '1', '2'),
-	('lshedden87', 'Brittney', 'Blondie', 'Lil', 'O\'\'Kennavain', 'Shedden', 'lshedden87@cafepress.com', 'pLt7r7QfV', '7/20/2003', '12/23/2022', '1', '10'),
+	('lshedden87', 'Brittney', 'Blondie', 'Lil', 'Kennavain', 'Shedden', 'lshedden87@cafepress.com', 'pLt7r7QfV', '7/20/2003', '12/23/2022', '1', '10'),
 	('bpatershall88', 'Bernice', 'Freda', 'Bobinette', 'Gruszecki', 'Patershall', 'bpatershall88@pen.io', 't64RbGKvK', '6/11/2002', '7/25/2022', '1', '2'),
 	('gblaiklock89', 'Estelle', 'Robina', 'Gustaf', 'Tomankowski', 'Blaiklock', 'gblaiklock89@buzzfeed.com', 'GhWwiFgq2', '12/9/1997', '10/6/2022', '1', '10'),
 	('rhenken8a', 'Madonna', 'Humfrey', 'Rory', 'Allsobrook', 'Henken', 'rhenken8a@msu.edu', 'xTpgTMrCu', '7/21/1991', '2/6/2023', '1', '18'),
@@ -395,8 +395,8 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('jseleway9f', 'Orbadiah', 'Farra', 'Janene', 'MacLoughlin', 'Seleway', 'jseleway9f@nps.gov', 'K42pPHSPW', '5/14/1991', '10/3/2022', '1', '14'),
 	('scharter9g', 'Pegeen', 'Emili', 'Stevena', 'Lothean', 'Charter', 'scharter9g@smugmug.com', '7Z2MX2Lvx', '11/13/1980', '2/18/2023', '1', '2'),
 	('kkopp9h', 'Rosalie', 'Luther', 'Kalila', 'Fransewich', 'Kopp', 'kkopp9h@businessinsider.com', 'yFRB5rL92', '7/25/1999', '12/24/2022', '1', '21'),
-	('goshiels9i', 'Mitzi', 'Freida', 'Gwenette', 'Jelkes', 'O\'\'Shiels', 'goshiels9i@java.com', 'YaqdiuRZa', '8/12/2003', '8/23/2022', '1', '20'),
-	('socrigane9j', 'Tish', 'Leonidas', 'Silvain', 'Stirley', 'O\'\'Crigane', 'socrigane9j@patch.com', '2LGUP8V9k', '11/16/1986', '2/12/2023', '1', '6'),
+	('goshiels9i', 'Mitzi', 'Freida', 'Gwenette', 'Jelkes', 'Shiels', 'goshiels9i@java.com', 'YaqdiuRZa', '8/12/2003', '8/23/2022', '1', '20'),
+	('socrigane9j', 'Tish', 'Leonidas', 'Silvain', 'Stirley', 'Crigane', 'socrigane9j@patch.com', '2LGUP8V9k', '11/16/1986', '2/12/2023', '1', '6'),
 	('nmaffulli9k', 'Yettie', 'Dwain', 'Nicky', 'Landell', 'Maffulli', 'nmaffulli9k@csmonitor.com', 'YLxvUu4ZK', '2/20/1992', '1/24/2023', '1', '3'),
 	('ntyers9l', 'Hersch', 'Damaris', 'Nesta', 'Pearcy', 'Tyers', 'ntyers9l@addtoany.com', 'ahYTpWwTm', '5/19/1988', '3/2/2023', '1', '28'),
 	('elievesley9m', 'Catherine', 'Ahmad', 'Erika', 'Durie', 'Lievesley', 'elievesley9m@mozilla.org', 'qmYvB9fvS', '9/16/1993', '3/19/2023', '1', '1'),
@@ -434,7 +434,7 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('akimminsai', 'Noak', 'Fallon', 'Avigdor', 'Kenna', 'Kimmins', 'akimminsai@nytimes.com', 'jg4PE4Xpt', '10/9/2009', '10/26/2022', '1', '10'),
 	('nrojelaj', 'Brandice', 'Adelaide', 'Nissie', 'Clere', 'Rojel', 'nrojelaj@mapy.cz', 'LPtDuCqzE', '5/8/1981', '10/5/2022', '1', '3'),
 	('omagennyak', 'Ingaborg', 'Brigham', 'Osmund', 'Herity', 'Magenny', 'omagennyak@tuttocitta.it', 'VxaH6r6CJ', '6/15/1992', '9/10/2022', '1', '13'),
-	('jobruenal', 'Siegfried', 'Remington', 'Jazmin', 'Kerwood', 'O\'\'Bruen', 'jobruenal@technorati.com', 'pFALACzrw', '10/6/1980', '6/8/2022', '1', '25'),
+	('jobruenal', 'Siegfried', 'Remington', 'Jazmin', 'Kerwood', 'Bruen', 'jobruenal@technorati.com', 'pFALACzrw', '10/6/1980', '6/8/2022', '1', '25'),
 	('jsaiensam', 'Ernesta', 'Helge', 'Joseito', 'Slyne', 'Saiens', 'jsaiensam@usda.gov', 'FmFPDP86r', '10/12/2003', '3/4/2023', '1', '12'),
 	('cwolfersan', 'Adams', 'Jane', 'Cristi', 'Flatte', 'Wolfers', 'cwolfersan@google.co.uk', 'GgGJYBFhB', '6/30/2007', '9/26/2022', '1', '26'),
 	('mreucastleao', 'Phip', 'Frances', 'Margalo', 'Maleney', 'Reucastle', 'mreucastleao@youtu.be', 'fmgY7fZL4', '7/26/2009', '7/15/2022', '1', '1'),
@@ -443,7 +443,7 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('pkohtlerar', 'Julian', 'Krystle', 'Petra', 'Pickle', 'Kohtler', 'pkohtlerar@gmpg.org', 'Pu3FNXnYe', '11/24/1984', '4/8/2023', '1', '14'),
 	('bmccandlessas', 'Bunni', 'Tiffie', 'Brooke', 'Conyard', 'McCandless', 'bmccandlessas@networksolutions.com', '5F9TM4cbd', '8/5/1988', '4/13/2023', '1', '13'),
 	('bmccullochat', 'Rabi', 'Berk', 'Bernhard', 'Reaper', 'McCulloch', 'bmccullochat@123-reg.co.uk', 'KQL4T2cDE', '9/15/2007', '6/13/2022', '1', '7'),
-	('ajurzykau', 'Amaleta', 'Melosa', 'Alayne', 'O\'\'Sheilds', 'Jurzyk', 'ajurzykau@tripod.com', 'avm7kdxpS', '9/2/1995', '6/19/2022', '1', '9'),
+	('ajurzykau', 'Amaleta', 'Melosa', 'Alayne', 'Sheilds', 'Jurzyk', 'ajurzykau@tripod.com', 'avm7kdxpS', '9/2/1995', '6/19/2022', '1', '9'),
 	('gdemitriav', 'Granny', 'Kimmy', 'Germain', 'Lovatt', 'De Mitri', 'gdemitriav@technorati.com', 'ptQPJkVEq', '6/8/2006', '10/18/2022', '1', '2'),
 	('odurandaw', 'Audrye', 'Bunni', 'Odetta', 'Camplin', 'Durand', 'odurandaw@merriam-webster.com', 'B2afDhCcE', '2/17/1990', '5/19/2022', '1', '14'),
 	('bsingyardax', 'Webster', 'Eugene', 'Bessy', 'Posnett', 'Singyard', 'bsingyardax@unesco.org', 'YkwwSk7VB', '8/28/1998', '8/3/2022', '1', '27'),
@@ -477,7 +477,7 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('csnellebp', 'Daryle', 'Guthrey', 'Clare', 'Ghest', 'Snelle', 'csnellebp@biglobe.ne.jp', 'XR2LkAk8p', '6/6/2004', '8/4/2022', '1', '11'),
 	('mlebarrbq', 'Darby', 'Analiese', 'Matteo', 'Wetherald', 'Le Barr', 'mlebarrbq@google.nl', 'z8eSdg85D', '11/9/2006', '1/21/2023', '1', '15'),
 	('gsjostrombr', 'Maura', 'Antonio', 'Grazia', 'Barabich', 'Sjostrom', 'gsjostrombr@dell.com', 'n2pgqP7EP', '9/10/1990', '6/22/2022', '1', '7'),
-	('coconnellbs', 'Den', 'Elisha', 'Conny', 'Fishbourn', 'O\'\'Connell', 'coconnellbs@discuz.net', 'LDuLjYAaM', '11/4/2000', '2/13/2023', '1', '20'),
+	('coconnellbs', 'Den', 'Elisha', 'Conny', 'Fishbourn', 'Connell', 'coconnellbs@discuz.net', 'LDuLjYAaM', '11/4/2000', '2/13/2023', '1', '20'),
 	('vslyvesterbt', 'Temp', 'Levi', 'Valdemar', 'Bickley', 'Slyvester', 'vslyvesterbt@nytimes.com', 'gqukPMVXa', '10/10/1985', '11/17/2022', '1', '15'),
 	('mbloodworthebu', 'Demetre', 'Adoree', 'Mellicent', 'Grabham', 'Bloodworthe', 'mbloodworthebu@ocn.ne.jp', 'wdr4Nu5GZ', '10/5/1983', '6/8/2022', '1', '19'),
 	('dshurmerbv', 'Clywd', 'Bethina', 'Dorri', 'Blanket', 'Shurmer', 'dshurmerbv@tuttocitta.it', 'XaK8pqwYe', '7/26/1981', '2/19/2023', '1', '9'),
@@ -536,7 +536,7 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('mkennellydc', 'Fedora', 'Englebert', 'Mariana', 'Mertin', 'Kennelly', 'mkennellydc@google.com', 'aifYZrc6t', '4/18/1996', '9/7/2022', '1', '7'),
 	('prockinghamdd', 'Panchito', 'Sharon', 'Petey', 'Paiton', 'Rockingham', 'prockinghamdd@unesco.org', '9e3Nacpmu', '8/1/1986', '9/15/2022', '1', '16'),
 	('aloughde', 'Kelsi', 'Massimo', 'Ami', 'Martlew', 'Lough', 'aloughde@nsw.gov.au', 'YdruVKzP6', '9/18/2000', '11/3/2022', '1', '19'),
-	('rdobbinsondf', 'Case', 'Ursa', 'Rolland', 'd\'\' Eye', 'Dobbinson', 'rdobbinsondf@epa.gov', '8mCbr3b32', '8/25/1995', '11/6/2022', '1', '18'),
+	('rdobbinsondf', 'Case', 'Ursa', 'Rolland', 'Eye', 'Dobbinson', 'rdobbinsondf@epa.gov', '8mCbr3b32', '8/25/1995', '11/6/2022', '1', '18'),
 	('dmattiolidg', 'Adriano', 'Millard', 'Debbi', 'Petrenko', 'Mattioli', 'dmattiolidg@time.com', 'cntgUmPPe', '11/16/1986', '5/23/2022', '1', '4'),
 	('dbrazerdh', 'Verene', 'Ravid', 'Dierdre', 'Horlick', 'Brazer', 'dbrazerdh@sphinn.com', 'UcdWWgg5F', '1/1/1982', '12/3/2022', '1', '14'),
 	('ahansedi', 'Mordecai', 'Jsandye', 'Alex', 'Maun', 'Hanse', 'ahansedi@amazon.com', 'dmL4rmApA', '6/14/1982', '1/10/2023', '1', '1'),
@@ -553,6 +553,8 @@ INSERT INTO Usuario (nickname, nombre1, nombre2, nombre3, apellido1, apellido2, 
 	('mdortondt', 'Luis', 'Tannie', 'Mahala', 'Bremond', 'Dorton', 'mdortondt@time.com', 'Kg7whvRpb', '8/21/1989', '3/22/2023', '1', '2'),
 	('gdoxseydu', 'Darsey', 'Georgine', 'Gaynor', 'Sherwell', 'Doxsey', 'gdoxseydu@sina.com.cn', 'gMENKnadG', '8/9/2008', '12/13/2022', '1', '6'),
 	('mbisterfelddv', 'Timmy', 'Humphrey', 'Maisie', 'Roth', 'Bisterfeld', 'mbisterfelddv@github.io', 'QwMnmnFFb', '6/30/1981', '10/21/2022', '1', '18');
+
+
 
 --Insertar partidas
 INSERT INTO Partida (fechaInicio, fechaFin, estado, idGanador, idTipoPartida) VALUES
