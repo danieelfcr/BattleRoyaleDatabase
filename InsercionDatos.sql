@@ -12644,3 +12644,25 @@ INSERT INTO DetallePartida (idPartida, idAsesino, idMuerto, fechaAsesinato) VALU
 	INSERT INTO DetallePartida (idPartida, idAsesino, idMuerto, fechaAsesinato) VALUES ('1000','352','436','2023-04-01 04:09:51');
 	INSERT INTO DetallePartida (idPartida, idAsesino, idMuerto, fechaAsesinato) VALUES ('1000','369','422','2023-04-01 04:09:51');
 
+insert into Cosmetico (idCosmetico, nombre, precio, idCategoriaCosmetico, idTipoCosmetico) values 
+('Shadow Assassin', 0.93, 3, 2),
+ ('Inferno Knight', 5.87, 3, 2),
+ ('Arctic Sniper', 24.09, 3, 2),
+ ('Savage Warlord', 12.91, 2, 2),
+ ('Celestial Guardian', 16.82, 3, 2),
+ ('Galactic Trooper', 4.37, 2, 2),
+ ('Desert Nomad', 16.2, 3, 2),
+ ('Mystic Shaman', 21.43, 3, 2),
+ ('Cyber Ninja', 16.91, 1, 2),
+ ('Samurai Master', 19.92, 3, 2),
+ ('Vindicator', 7.17, 2, 1),
+ ('Hellfire', 23.6, 3, 1),
+ ('Thunderbolt', 8.28, 3, 1),
+ ('Cyclone', 0.65, 3, 1),
+ ('Obliterator', 20.54, 1, 1),
+ ('Nightfall', 20.42, 2, 1),
+ ('Hydra', 16.75, 1, 1),
+ ('Tempest', 21.35, 2, 1),
+ ('Titan''s Fury', 13.96, 3, 1),
+ ('Eclipse', 16.37, 3, 1);
+
