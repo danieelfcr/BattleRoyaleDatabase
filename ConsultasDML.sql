@@ -22,7 +22,7 @@ use BattleRoyale
 		where DATEDIFF(month, fechaFin, getdate()) <= 3
 		group by p.idPartida
 		) as X
-	where X.cantidadUsuarios < 80  --REVISAR CON DATOS*****
+	where X.cantidadUsuarios < 80  
 
 --4. Ranking de jugadores por K/D por continente incluyendo únicamente a jugadores con 10 o más partidas
 
@@ -53,12 +53,12 @@ ORDER BY WinRatio DESC
 ----inner join con la tabla UsuarioCosmetico_ para obtener cosméticos que cada usuario posee
 ----inner join  con la tabla Cosmetico_ para obtener el nombre de cada cosmético
 ----count(*)cuenta la cantidad de veces que cada cosmético ha sido utilizado en las partidas
-SELECT c.nombre AS nombre_cosmetico, COUNT(*) AS veces_utilizado
+SELECT c.nombre AS 'nombre cosmetico', COUNT(*) AS 'veces utilizado'
 FROM DetalleCosmeticoPartida dcp
 INNER JOIN UsuarioCosmetico uc ON dcp.idUsuarioCosmetico = uc.idUsuarioCosmetico
 INNER JOIN Cosmetico c ON uc.idCosmetico = c.idCosmetico
 GROUP BY c.nombre
-ORDER BY veces_utilizado DESC
+ORDER BY 'veces utilizado' DESC
 
 
 
@@ -149,9 +149,9 @@ WHERE pa.idContinente = (
 )
 
 
-select * from DetallePartida
+
 --11. Cantidad de partidas en las que el ganador tenga 0 kills y algún jugador tenga 10 o más kills
-select * from DetallePartida
+
 
 
 --12. Listado de cosméticos ordenados por tipo, categoría y cantidad de partidas ganadas 
@@ -183,8 +183,6 @@ SELECT
 FROM 
     Usuario u
     inner join vKillsDeaths kd on (kd.idUsuario = u.idUsuario)
-	--inner JOIN DetallePartida DP ON DP.idAsesino = Usuario.idUsuario
-    --LEFT JOIN DetallePartida DM ON DM.idMuerto = Usuario.idUsuario
 WHERE 
     DATEDIFF(YEAR, fechaNacimiento, GETDATE()) >= 13
 GROUP BY 
@@ -198,4 +196,4 @@ GROUP BY
     u.nickname,
 	kd.killDeathRatio
 ORDER BY 
-    rangoEdad ASC--, kdRatio DESC
+    rangoEdad ASC, kd.killDeathRatio DESC
