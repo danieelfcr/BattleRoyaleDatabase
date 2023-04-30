@@ -136,8 +136,25 @@ go
 
 
 -- d) Win ratio: cantidad de partidas ganadas / cantidad de partidas totales
+go
+create view vWinRatioUsuario
+as
+	select u.idUsuario, ((COUNT( p.idGanador)) / (COUNT(distinct dcp.idPartida)))
+	from Usuario u	
+		left join Partida p on (p.idGanador = u.idUsuario)
+		left join DetalleCosmeticoPartida dcp on (dcp.idPartida = p.idPartida)
+	group by u.idUsuario
+	
+	
+	select dcp.idUsuario, COUNT(distinct dcp.idPartida) 
+	from DetalleCosmeticoPartida dcp
+	group by dcp.idUsuario
+	order by dcp.idUsuario
 
-
+	select COUNT(distinct dcp.idPartida) 
+	from DetalleCosmeticoPartida dcp
+	
+go
 
 
 
