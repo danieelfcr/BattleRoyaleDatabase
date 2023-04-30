@@ -26,25 +26,29 @@ use BattleRoyale
 
 --4. Ranking de jugadores por K/D por continente incluyendo únicamente a jugadores con 10 o más partidas
 
---5. Ranking de jugadores por Win ratio por continente incluyendo únicamente a jugadores con 10 o más partidas
----INNER JOIN entre la tabla Usuario y las tablas Continente y Pais, obtiene información geográfica de cada usuario
----LEFT JOIN con la tabla Partida, y se utiliza COUNT y CASE para contar el número total de partidas
----se calcula el porcentaje de victorias (WinRatio) dividiendo el número de victorias por el número total de partidas (exceptuando las partidas que no han sido completadas)
+select c.nombre, u.nickname, kd.killDeathRatio
+from vKillsDeaths kd
+	inner join Usuario u on (u.idUsuario = kd.idUsuario)
+	inner join Pais p on (p.idPais = u.idPais)
+	inner join Continente c on (c.idContinente = p.idContinente)
+	inner join vTotalPartidasUsuario tpu on (tpu.idUsuario = u.idUsuario)
+where tpu.[total partidas] > 10
+group by c.nombre, u.nickname, kd.killDeathRatio
+order by c.nombre, kd.killDeathRatio desc
 
-SELECT U.idUsuario, U.nickname, P.nombre AS pais, C.nombre AS continente,
-    COUNT(DP.idDetallePartida) AS TotalPartidas,
-    COUNT(CASE WHEN DP.idAsesino IS NOT NULL AND DP.idMuerto IS NOT NULL AND DP.idAsesino = U.idUsuario THEN 1 END) AS TotalVictorias,
-    COUNT(CASE WHEN DP.idAsesino IS NOT NULL AND DP.idMuerto IS NOT NULL AND DP.idAsesino != U.idUsuario THEN 1 END) AS TotalDerrotas,
-    CONVERT(DECIMAL(18,2), COUNT(CASE WHEN DP.idAsesino IS NOT NULL AND DP.idMuerto IS NOT NULL AND DP.idAsesino = U.idUsuario THEN 1 END)) / NULLIF(CONVERT(DECIMAL(18,2), COUNT(DP.idDetallePartida)),0) AS WinRatio
-FROM Usuario U
-INNER JOIN Pais P ON P.idPais = U.idPais
-INNER JOIN Continente C ON C.idContinente = P.idContinente
-INNER JOIN Partida PA ON PA.idGanador = U.idUsuario
-INNER JOIN DetallePartida DP ON DP.idPartida = PA.idPartida AND DP.idMuerto = U.idUsuario
-WHERE U.estado = 1
-GROUP BY U.idUsuario, U.nickname, P.nombre, C.nombre
-HAVING COUNT(DP.idDetallePartida) >= 10
-ORDER BY WinRatio DESC
+
+
+--5. Ranking de jugadores por Win ratio por continente incluyendo únicamente a jugadores con 10 o más partidas
+select c.nombre, u.nickname, wru.WinRatio
+from vWinRatioUsuario wru
+	inner join Usuario u on (u.idUsuario = wru.idUsuario)
+	inner join Pais p on (p.idPais = u.idPais)
+	inner join Continente c on (c.idContinente = p.idContinente)
+	inner join vTotalPartidasUsuario tpu on (tpu.idUsuario = u.idUsuario)
+where tpu.[total partidas] > 10
+group by c.nombre, u.nickname, wru.WinRatio
+order by c.nombre, wru.WinRatio desc
+
 
 
 
@@ -78,28 +82,19 @@ order by p.idPartida
 
 --8. Listado de jugadores rivales y grado de rivalidad: se define que dos jugadores son rivales si han participado  en una misma partida 5 o más veces y el grado de rivalidad es la cantidad de partidas que han jugado juntos*/
 
-----C1 se une con U1 para obtener los datos del jugador 1.
-----C2 se une con C1 para obtener los datos de la conexión que tuvo lugar para el jugador 1.
-----C2 se une con U2 para obtener los datos del jugador 2.
-----C1 se une con P para obtener los datos de las partidas jugadas.
-----La condición C2.idUsuario <> U1.idUsuario se utiliza para asegurarse de que el jugador 2 no sea el mismo que el jugador 1.
----- HAVING COUNT(DISTINCT P.idPartida) >= 5 se utiliza para limitar los resultados a aquellos pares de jugadores que hayan jugado al menos 5 partidas juntos.
-SELECT 
-    U1.idUsuario AS idJugador1, 
-    U1.nickname AS Jugador1, 
-    U2.idUsuario AS idJugador2, 
-    U2.nickname AS Jugador2,
-    COUNT(DISTINCT P.idPartida) AS GradoRivalidad
-FROM Usuario U1
-INNER JOIN Conexion C1 ON U1.idUsuario = C1.idUsuario
-INNER JOIN Conexion C2 ON C1.idConexion = C2.idConexion AND C2.idUsuario <> U1.idUsuario
-INNER JOIN Partida P ON C1.idConexion = C2.idConexion
-INNER JOIN Usuario U2 ON C2.idUsuario = U2.idUsuario
-GROUP BY U1.idUsuario, U1.nickname, U2.idUsuario, U2.nickname
-HAVING COUNT(DISTINCT P.idPartida) >= 5
+SELECT DC1.idUsuario AS Jugador1, DC2.idUsuario AS Jugador2, COUNT(*) AS GradoRivalidad
+FROM
+    DetalleCosmeticoPartida DC1
+     JOIN DetalleCosmeticoPartida DC2
+        ON DC1.idPartida = DC2.idPartida
+         AND DC1.idUsuario < DC2.idUsuario
+WHERE DC1.idUsuario <> DC2.idUsuario
+GROUP BY  DC1.idUsuario,DC2.idUsuario
+HAVING COUNT(*) >= 5
+ORDER BY COUNT(*) DESC
+ 
 
 
-	
 
 --9. Promedio de tiempo efectivo de juego por país
 
@@ -113,40 +108,59 @@ order by ps.nombre
 
 
 --10. Cantidad de partidas en las cuales ha habido al menos un jugador de Asia y uno de América y que uno de estos haya ganado la partida
----se seleccionan los id de partida distintos donde un jugador muere y pertenece a Asia o América, utilizando las tablas Partida_, DetallePartida_, Usuario_ y Pais_
----WHERE especifica que se deben buscar partidas en las que el país de origen del jugador muerto pertenece a uno de los dos continentes mencionados
---- se une el resultado anterior con la tabla Partida_ para obtener más información sobre las partidas que cumplen con los criterios anteriores
----se une con las tablas Usuario_ y Pais_ para obtener información sobre el ganador de cada partida y su país de origen
----se cuenta la cantidad de registros resultantes en la tabla subconsulta
-SELECT COUNT(*) AS CantidadDePartidas
-FROM (
-    SELECT DISTINCT p.idPartida
-    FROM Partida p
-    INNER JOIN DetallePartida dp ON p.idPartida = dp.idPartida
-    INNER JOIN Usuario u ON u.idUsuario = dp.idMuerto
-    INNER JOIN Pais pa ON pa.idPais = u.idPais
-    WHERE pa.idContinente = (
-        SELECT c.idContinente
-        FROM Continente c
-        WHERE c.nombre = 'Asia'
-    ) OR pa.idContinente = (
-        SELECT c.idContinente
-        FROM Continente c
-        WHERE c.nombre = 'América'
-    )
-) AS subq
-INNER JOIN Partida p ON subq.idPartida = p.idPartida
-INNER JOIN Usuario u ON p.idGanador = u.idUsuario
-INNER JOIN Pais pa ON pa.idPais = u.idPais
-WHERE pa.idContinente = (
-    SELECT c.idContinente
-    FROM Continente c
-    WHERE c.nombre = 'Asia'
-) OR pa.idContinente = (
-    SELECT c.idContinente
-    FROM Continente c
-    WHERE c.nombre = 'América'
-)
+
+-- variables utilizadas para el cursor
+declare @vIdPartida int, @vIdGanador int, @vContinente varchar(50), @vBanderaAsia bit = 0, @vBanderaAmerica bit = 0, @vUsuario int, @vContinenteUsuario varchar(50), @vIdPartidaAnterior int, @vContador int = 0
+
+-- declaración del cursor y su query base
+declare c_partidas cursor for
+	select p.idPartida, p.idGanador, c.nombre
+	from Partida p
+		inner join Usuario u on (p.idGanador = u.idUsuario)
+		inner join Pais pa on (pa.idPais = u.idPais)
+		inner join Continente c on (c.idContinente = pa.idContinente)
+	where c.nombre = 'Asia' or c.nombre like '%América%'
+
+-- apertura cursor
+open c_partidas
+
+-- ciclo de recorrido
+fetch c_partidas into @vIdPartida, @vIdGanador, @vContinente
+	while (@@FETCH_STATUS = 0)
+	begin		
+
+		select distinct  @vUsuario = dp.idUsuario, @vContinenteUsuario = c.nombre
+		from DetalleCosmeticoPartida dp
+			inner join Usuario u on (u.idUsuario = dp.idUsuario)
+			inner join Pais p on (p.idPais = u.idPais)
+			inner join Continente c on (c.idContinente = p.idContinente)
+		where dp.idPartida = @vIdPartida
+
+		-- asignación de variables bandera
+		if (@vContinenteUsuario = 'Asia')
+		begin
+			set @vBanderaAsia = 1 
+		end
+		if (@vContinenteUsuario like '%América%')
+		begin
+			set @vBanderaAmerica = 1 
+		end
+
+		-- se guarda la partida anterior para saber cuando dejar de utilizar la variable contador
+		set @vIdPartidaAnterior = @vIdPartida
+		fetch c_partidas into @vIdPartida, @vIdGanador, @vContinente
+
+
+		-- se verifica que hay un cambio de partida y antes de recorrer la nueva partida se verifica que ambas banderas tengan un valor de 1, indicando que había mínimo un jugador de Asia y uno de América
+		if (@vIdPartidaAnterior != @vIdPartida and @vBanderaAsia = 1  and @vBanderaAmerica = 1)
+		begin
+			set @vContador = @vContador + 1
+		end	
+	end
+	print @vContador
+
+close c_partidas
+deallocate c_partidas
 
 
 

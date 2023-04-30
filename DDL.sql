@@ -135,31 +135,29 @@ go
 -- c) Utilización efectiva de un cosmético: cantidad de usuarios que lo han utilizado en una partida / cantidad de usuarios que lo han comprado
 
 
--- d) Win ratio: cantidad de partidas ganadas / cantidad de partidas totales
+
+-- d) total partidas de cada usuario
+
+go
+create view vTotalPartidasUsuario
+as
+	select dcp.idUsuario, COUNT(distinct dcp.idPartida) as 'total partidas'
+	from DetalleCosmeticoPartida dcp
+	group by dcp.idUsuario
+		
+go
+
+-- e) Win ratio: cantidad de partidas ganadas / cantidad de partidas totales
 go
 create view vWinRatioUsuario
 as
-	select u.idUsuario, ((COUNT( p.idGanador)) / (COUNT(distinct dcp.idPartida)))
+	select u.idUsuario, cast(COUNT( p.idGanador) as decimal(2)) / CAST(tpu.[total partidas] as decimal(2)) as 'winRatio' 
 	from Usuario u	
 		left join Partida p on (p.idGanador = u.idUsuario)
-		left join DetalleCosmeticoPartida dcp on (dcp.idPartida = p.idPartida)
-	group by u.idUsuario
-	
-	
-	select dcp.idUsuario, COUNT(distinct dcp.idPartida) 
-	from DetalleCosmeticoPartida dcp
-	group by dcp.idUsuario
-	order by dcp.idUsuario
-
-	select COUNT(distinct dcp.idPartida) 
-	from DetalleCosmeticoPartida dcp
-	
+		inner join vTotalPartidasUsuario tpu on (tpu.idUsuario = u.idUsuario)
+	group by u.idUsuario, tpu.[total partidas]
 go
 
-
-
-
-	
 
 	
 
