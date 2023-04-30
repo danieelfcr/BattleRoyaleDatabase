@@ -112,3 +112,51 @@ create table DetallePartida (
 )
 
 
+-- Creación de vistas que serán utilizadas repeditamente en consultas
+
+-- Key performance indicators (KPIs)
+-- a) K/D de un jugador: kills/deaths
+create view vKillsDeaths 
+as
+	select idAsesino as 'idUsuario', CAST(count(*) as decimal(2)) / CAST((select count(*) from DetallePartida where idMuerto = dp.idAsesino) as decimal(2)) as 'killDeathRatio'
+	from DetallePartida dp	
+	group by idAsesino
+
+-- b) Tiempo efectivo de juego: cantidad de tiempo en partida / cantidad de tiempo en la plataforma
+create view vTiempoEfectivoJuego 
+as
+	select u.idUsuario, (SUM(datediff(MINUTE, c.fechaLogin, c.fechaLogoff)) / SUM(datediff(MINUTE, p.fechaInicio, p.fechaFin))) as 'tiempoEfectivoJuego(minutos)'
+	from Usuario u
+		inner join Conexion c on (c.idUsuario = u.idUsuario)
+		inner join DetallePartida dp on (dp.idAsesino = u.idUsuario)
+		inner join Partida p on (p.idPartida = dp.idPartida)
+	group by u.idUsuario
+
+-- c) Utilización efectiva de un cosmético: cantidad de usuarios que lo han utilizado en una partida / cantidad de usuarios que lo han comprado
+
+
+-- d) Win ratio: cantidad de partidas ganadas / cantidad de partidas totales
+create view vWinRatioUsuario
+as
+	select u.idUsuario, COUNT( p.idGanador) as 'partidasGanadas', (select count(distinct dcp.idUsuario) as 'partidasTotales' from Usuario u inner join DetalleCosmeticoPartida dcp on (dcp.idUsuario = u.idUsuario) group by u.idUsuario)
+	from Usuario u
+		left join Partida p on (p.idGanador = u.idUsuario)
+	group by u.idUsuario
+	order by u.idUsuario
+
+
+
+
+	
+
+	
+
+	
+
+
+
+	 
+	
+
+
+

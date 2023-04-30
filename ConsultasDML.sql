@@ -1,3 +1,4 @@
+
 --Consultas
 use BattleRoyale
 
@@ -156,3 +157,4 @@ WHERE pa.idContinente = (
 --14. Top 10 jugadores con más tiempo de juego
 
 --15. Ranking de jugadores según su K/D por rango de edad (13 a 15, 16 a 20, 21 a 25, 26 a 30 y mayores de 30)
+
