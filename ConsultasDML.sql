@@ -66,11 +66,14 @@ ORDER BY veces_utilizado DESC
 ----join de tablas "Partida" y "DetallePartida" mediante la columna "idPartida"
 ----where filtra por el ID del asesino ganador
 
-SELECT P.idPartida, COUNT(DP.idMuerto) as cantidad_kills
-FROM Partida P
-JOIN DetallePartida DP ON P.idPartida = DP.idPartida
-WHERE P.idGanador = [idasesino]
-GROUP BY P.idPartida
+select p.idPartida, u.nickname as 'ganador',  COUNT(*) as 'kills' 
+from DetallePartida dp 
+	inner join Partida p on (p.idPartida = dp.idPartida)
+	inner join Usuario u on (u.idUsuario = p.idGanador)
+where dp.idAsesino = p.idGanador and dp.idPartida = p.idPartida
+group by p.idPartida, u.nickname
+order by p.idPartida
+
 
 
 --8. Listado de jugadores rivales y grado de rivalidad: se define que dos jugadores son rivales si han participado  en una misma partida 5 o más veces y el grado de rivalidad es la cantidad de partidas que han jugado juntos*/
@@ -87,7 +90,7 @@ SELECT
     U2.idUsuario AS idJugador2, 
     U2.nickname AS Jugador2,
     COUNT(DISTINCT P.idPartida) AS GradoRivalidad
-FROM Usuario_ U1
+FROM Usuario U1
 INNER JOIN Conexion C1 ON U1.idUsuario = C1.idUsuario
 INNER JOIN Conexion C2 ON C1.idConexion = C2.idConexion AND C2.idUsuario <> U1.idUsuario
 INNER JOIN Partida P ON C1.idConexion = C2.idConexion
@@ -99,18 +102,14 @@ HAVING COUNT(DISTINCT P.idPartida) >= 5
 	
 
 --9. Promedio de tiempo efectivo de juego por país
-----9 Promedio de tiempo efectivo de juego por país
-----join tablas de Usuario, Conexion, Partida y Pais
-----Partida_.estado = 1 filtro de partidas finalizadas
-----DATEDIFF() para calcular el tiempo y AVG para el promedio
-SELECT Pais.nombre as Pais, 
-       AVG(DATEDIFF(MINUTE, Conexion.fechaLogin, Partida.fechaFin)) as PromedioTiempoJuego
-FROM Usuario
-JOIN Conexion ON Usuario.idUsuario = Conexion.idUsuario 
-JOIN Partida ON Partida.idGanador = Usuario.idUsuario 
-JOIN Pais ON Pais.idPais = Usuario.idPais
-WHERE Partida.estado = 1 -- se consideran solo las partidas finalizadas
-GROUP BY Pais.nombre
+
+select ps.nombre,  AVG(tej.[tiempoEfectivoJuego(minutos)]) as 'promedio tiempo Efectivo de Juego (minutos)'
+from Pais ps
+	inner join Usuario u on (u.idPais = ps.idPais)
+	inner join vTiempoEfectivoJuego tej on (tej.idUsuario = u.idUsuario)
+group by ps.nombre
+order by ps.nombre
+
 
 
 --10. Cantidad de partidas en las cuales ha habido al menos un jugador de Asia y uno de América y que uno de estos haya ganado la partida
@@ -148,13 +147,55 @@ WHERE pa.idContinente = (
     FROM Continente c
     WHERE c.nombre = 'América'
 )
+
+
+select * from DetallePartida
 --11. Cantidad de partidas en las que el ganador tenga 0 kills y algún jugador tenga 10 o más kills
+select * from DetallePartida
+
 
 --12. Listado de cosméticos ordenados por tipo, categoría y cantidad de partidas ganadas 
 
 --13. Cantidad de partidas por tiempo de duración en minutos
 
 --14. Top 10 jugadores con más tiempo de juego
+select top 10  u.nickname, SUM(datediff(MINUTE, p.fechaInicio, p.fechaFin)) as 'tiempo de juego (minutos)'
+	from Usuario u
+		inner join Conexion c on (c.idUsuario = u.idUsuario)
+		inner join DetallePartida dp on (dp.idAsesino = u.idUsuario)
+		inner join Partida p on (p.idPartida = dp.idPartida)
+	group by u.nickname
+	order by SUM(datediff(MINUTE, p.fechaInicio, p.fechaFin)) desc
+
 
 --15. Ranking de jugadores según su K/D por rango de edad (13 a 15, 16 a 20, 21 a 25, 26 a 30 y mayores de 30)
 
+SELECT 
+    CASE 
+        WHEN DATEDIFF(YEAR, u.fechaNacimiento, GETDATE()) BETWEEN 13 AND 15 THEN '13-15'
+        WHEN DATEDIFF(YEAR, u.fechaNacimiento, GETDATE()) BETWEEN 16 AND 20 THEN '16-20'
+        WHEN DATEDIFF(YEAR, u.fechaNacimiento, GETDATE()) BETWEEN 21 AND 25 THEN '21-25'
+        WHEN DATEDIFF(YEAR, u.fechaNacimiento, GETDATE()) BETWEEN 26 AND 30 THEN '26-30'
+        ELSE 'Mayor de 30'
+    END AS rangoEdad,
+    u.nickname,
+	kd.killDeathRatio
+FROM 
+    Usuario u
+    inner join vKillsDeaths kd on (kd.idUsuario = u.idUsuario)
+	--inner JOIN DetallePartida DP ON DP.idAsesino = Usuario.idUsuario
+    --LEFT JOIN DetallePartida DM ON DM.idMuerto = Usuario.idUsuario
+WHERE 
+    DATEDIFF(YEAR, fechaNacimiento, GETDATE()) >= 13
+GROUP BY 
+    CASE 
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 13 AND 15 THEN '13-15'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 16 AND 20 THEN '16-20'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 21 AND 25 THEN '21-25'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 26 AND 30 THEN '26-30'
+        ELSE 'Mayor de 30'
+    END,
+    u.nickname,
+	kd.killDeathRatio
+ORDER BY 
+    rangoEdad ASC--, kdRatio DESC
