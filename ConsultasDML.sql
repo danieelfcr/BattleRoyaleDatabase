@@ -147,12 +147,88 @@ WHERE pa.idContinente = (
     FROM Continente c
     WHERE c.nombre = 'América'
 )
---11. Cantidad de partidas en las que el ganador tenga 0 kills y algún jugador tenga 10 o más kills
+----11 . Cantidad de partidas en las que el ganador tenga 0 kills y algún jugador tenga 10 o
+----más kills
+----join con DetallePartida y idPartida para obtener información de cada partida
+----join con Usuario y idUsuario para obtener el ganador de cada partida
+----HAVING para devolver solo las partidas con 10 o más kills
+----WHERE para filtrar que el ganador no haya realizado ninguna kill
 
---12. Listado de cosméticos ordenados por tipo, categoría y cantidad de partidas ganadas 
+SELECT COUNT(*) as CantidadDePartidas
+FROM Partida p
+INNER JOIN DetallePartida dp ON p.idPartida = dp.idPartida
+INNER JOIN Usuario u ON p.idGanador = u.idUsuario
+INNER JOIN (
+    SELECT idPartida, COUNT(*) as CantidadDeKills
+    FROM DetallePartida
+    GROUP BY idPartida, idAsesino
+    HAVING COUNT(*) >= 10
+) dp2 ON dp2.idPartida = dp.idPartida
+WHERE dp.idAsesino IS NULL AND dp2.CantidadDeKills > 0
 
---13. Cantidad de partidas por tiempo de duración en minutos
 
---14. Top 10 jugadores con más tiempo de juego
+----12. Listado de cosméticos ordenados por tipo, categoría y cantidad de partidas ganadas 
+----JOINS en tablas: Cosmetico, TipoCosmetico, CategoriaCosmetico, UsuarioCosmetico y Partida
+SELECT c.nombre as 'Cosmetico', tc.nombre as 'Tipo Cosmetico', cc.nombre as 'Categoria Cosmetico', COUNT(p.idPartida) as 'Partidas Ganadas'
+FROM Cosmetico c
+INNER JOIN TipoCosmetico tc ON c.idTipoCosmetico = tc.idTipoCosmetico
+INNER JOIN CategoriaCosmetico cc ON c.idCategoriaCosmetico = cc.idCategoriaCosmetico
+INNER JOIN UsuarioCosmetico uc ON c.idCosmetico = uc.idCosmetico
+INNER JOIN Partida p ON uc.idUsuario = p.idGanador
+GROUP BY c.nombre, tc.nombre, cc.nombre
+ORDER BY tc.nombre, cc.nombre, COUNT(p.idPartida) DESC
 
---15. Ranking de jugadores según su K/D por rango de edad (13 a 15, 16 a 20, 21 a 25, 26 a 30 y mayores de 30)
+----13. Cantidad de partidas por tiempo de duración en minutos
+----DATEDIFF diferencia en minutos entre la fecha de inicio y fin de cada partida
+----ORDER BY ASC ordenar ascendentemente los resultados por la duración en minutos
+SELECT DATEDIFF(minute, P.fechaInicio, P.fechaFin) AS DuracionMinutos, COUNT(*) AS CantidadPartidas
+FROM Partida P
+GROUP BY DATEDIFF(minute, P.fechaInicio, P.fechaFin)
+ORDER BY DuracionMinutos ASC;
+
+----14. Top 10 jugadores con más tiempo de juego
+----DATEDIFF diferencia de horas entre la fecha de inicio y la fecha de fin de cada conexión 
+----SUM suma total de horas 
+SELECT TOP 10 u.nickname, SUM(DATEDIFF(HOUR, c.fechaLogin, c.fechaLogoff)) AS horas_juego
+FROM Usuario u
+INNER JOIN Conexion c ON u.idUsuario = c.idUsuario
+GROUP BY u.idUsuario, u.nickname
+ORDER BY horas_juego DESC
+
+----15. Ranking de jugadores según su K/D por rango de edad 
+----(13 a 15, 16 a 20, 21 a 25, 26 a 30 y mayores de 30)
+----DATEDIFF calcular la edad de cada usuario y agruparlo en los rangos de edad
+----LEFT JOIN tabla usuario y la tabla de detallepartida. 1. asesinatos. 2. muertes.
+----COUNT cantidad asesinatos y muertes por usuario, y calculamos su relación K/D (asesinatos/muertes)
+----GROUP BY DESC agrupacion de edad de manera descendente
+SELECT 
+    CASE 
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 13 AND 15 THEN '13-15'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 16 AND 20 THEN '16-20'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 21 AND 25 THEN '21-25'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 26 AND 30 THEN '26-30'
+        ELSE 'Mayor de 30'
+    END AS rangoEdad,
+    Usuario.nickname,
+    COUNT(DP.idDetallePartida) AS totalAsesinatos,
+    COUNT(DM.idDetallePartida) AS totalMuertes,
+    CAST(COUNT(DP.idDetallePartida) AS FLOAT) / NULLIF(COUNT(DM.idDetallePartida), 0) AS kdRatio
+FROM 
+    Usuario
+    LEFT JOIN DetallePartida DP ON DP.idAsesino = Usuario.idUsuario
+    LEFT JOIN DetallePartida DM ON DM.idMuerto = Usuario.idUsuario
+WHERE 
+    DATEDIFF(YEAR, fechaNacimiento, GETDATE()) >= 13
+GROUP BY 
+    CASE 
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 13 AND 15 THEN '13-15'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 16 AND 20 THEN '16-20'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 21 AND 25 THEN '21-25'
+        WHEN DATEDIFF(YEAR, fechaNacimiento, GETDATE()) BETWEEN 26 AND 30 THEN '26-30'
+        ELSE 'Mayor de 30'
+    END,
+    Usuario.nickname
+ORDER BY 
+    rangoEdad ASC, kdRatio DESC
+
+
