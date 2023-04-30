@@ -23,7 +23,23 @@ use BattleRoyale
 		) as X
 	where X.cantidadUsuarios < 80  --REVISAR CON DATOS*****
 
---4. Ranking de jugadores por K/D por continente incluyendo únicamente a jugadores con 10 o más partidas
+----4 Ranking de jugadores por K/D por continente incluyendo únicamente a jugadores con 10 o más partidas
+----COUNT(DISTINCT p.idPartida) cuenta el número de partidas de un jugador
+----SUM(CASE WHEN dp.idAsesino = u.idUsuario THEN 1 ELSE 0 END) y SUM(CASE WHEN dp.idMuerto = u.idUsuario THEN 1 ELSE 0 END) cuentan los números de asesinatos y muertes
+----NULLIF para evitar errores de división por cero y calcula la relación de asesinatos a muertes
+SELECT c.nombre AS continente, u.nickname AS jugador, 
+       COUNT(DISTINCT p.idPartida) AS partidas_jugadas, 
+       SUM(CASE WHEN dp.idAsesino = u.idUsuario THEN 1 ELSE 0 END) AS asesinatos,
+       SUM(CASE WHEN dp.idMuerto = u.idUsuario THEN 1 ELSE 0 END) AS muertes,
+       CAST(SUM(CASE WHEN dp.idAsesino = u.idUsuario THEN 1 ELSE 0 END) AS decimal(10,2)) / 
+           NULLIF(CAST(SUM(CASE WHEN dp.idMuerto = u.idUsuario THEN 1 ELSE 0 END) AS decimal(10,2)), 0) AS ratio
+FROM Continente_ c
+JOIN Pais_ pa ON c.idContinente = pa.idContinente
+JOIN Usuario_ u ON pa.idPais = u.idPais
+JOIN Conexion_ co ON u.idUsuario = co.idUsuario
+JOIN Partida_ p ON co.idConexion = p.idGanador
+JOIN DetallePartida_ dp ON p.idPartida = dp.idPartida
+GROUP BY c.nombre, u.nickname;
 
 --5. Ranking de jugadores por Win ratio por continente incluyendo únicamente a jugadores con 10 o más partidas
 ---INNER JOIN entre la tabla Usuario y las tablas Continente y Pais, obtiene información geográfica de cada usuario
