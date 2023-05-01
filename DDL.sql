@@ -132,8 +132,28 @@ as
 		inner join Partida p on (p.idPartida = dp.idPartida)
 	group by u.idUsuario
 go
--- c) Utilización efectiva de un cosmético: cantidad de usuarios que lo han utilizado en una partida / cantidad de usuarios que lo han comprado
 
+-- c) Total de compras realizadas para cada cosmético
+go
+create view vTotalComprasCosmetico
+as
+	select uc.idCosmetico, COUNT(uc.idCosmetico) as 'total compras'
+	from UsuarioCosmetico uc
+	group by idCosmetico
+	
+go
+
+
+-- c) Utilización efectiva de un cosmético: cantidad de usuarios que lo han utilizado en una partida / cantidad de usuarios que lo han comprado
+go
+create view vUtilizacionEfectivaCosmetico 
+as
+	select uc.idCosmetico, CAST(COUNT(distinct dcp.idPartida) as decimal(5,2)) / CAST(tcc.[total compras] as decimal(5,2)) as 'utilización efectiva'
+	from DetalleCosmeticoPartida dcp
+		inner join UsuarioCosmetico uc on (uc.idUsuarioCosmetico = dcp.idUsuarioCosmetico)
+		inner join vTotalComprasCosmetico tcc on (tcc.idCosmetico = uc.idCosmetico)
+	group by uc.idCosmetico, tcc.[total compras]
+go
 
 
 -- d) total partidas de cada usuario

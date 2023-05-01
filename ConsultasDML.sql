@@ -53,16 +53,10 @@ order by c.nombre, wru.WinRatio desc
 
 
 --6. Ranking de cosméticos por su utilización efectiva
-----consulta  DetalleCosmeticoPartida_ para obtener registros de cosméticos utilizados por usuarios durante las partidas
-----inner join con la tabla UsuarioCosmetico_ para obtener cosméticos que cada usuario posee
-----inner join  con la tabla Cosmetico_ para obtener el nombre de cada cosmético
-----count(*)cuenta la cantidad de veces que cada cosmético ha sido utilizado en las partidas
-SELECT c.nombre AS 'nombre cosmetico', COUNT(*) AS 'veces utilizado'
-FROM DetalleCosmeticoPartida dcp
-INNER JOIN UsuarioCosmetico uc ON dcp.idUsuarioCosmetico = uc.idUsuarioCosmetico
-INNER JOIN Cosmetico c ON uc.idCosmetico = c.idCosmetico
-GROUP BY c.nombre
-ORDER BY 'veces utilizado' DESC
+select c.nombre, uec.[utilización efectiva] 
+from vUtilizacionEfectivaCosmetico uec
+	inner join Cosmetico c on (c.idCosmetico = uec.idCosmetico)
+order by 2 desc
 
 
 
@@ -182,8 +176,21 @@ AND EXISTS (
 
 
 --12. Listado de cosméticos ordenados por tipo, categoría y cantidad de partidas ganadas 
+select c.nombre, tc.nombre, cc.nombre, COUNT(*) as 'Partidas ganadas'
+from Partida p
+	inner join UsuarioCosmetico uc on (uc.idUsuario = p.idGanador)
+	inner join Cosmetico c on (c.idCosmetico = uc.idCosmetico)
+	inner join CategoriaCosmetico cc on (cc.idCategoriaCosmetico = c.idCategoriaCosmetico)
+	inner join TipoCosmetico tc on (tc.idTipoCosmetico = c.idTipoCosmetico)
+group by c.nombre, tc.nombre, cc.nombre
+order by c.nombre, tc.nombre, cc.nombre
+
 
 --13. Cantidad de partidas por tiempo de duración en minutos
+SELECT DATEDIFF(minute, P.fechaInicio, P.fechaFin) AS DuracionMinutos, COUNT(*) AS CantidadPartidas
+FROM Partida P
+GROUP BY DATEDIFF(minute, P.fechaInicio, P.fechaFin)
+ORDER BY DuracionMinutos ASC;
 
 --14. Top 10 jugadores con más tiempo de juego
 select top 10  u.nickname, SUM(datediff(MINUTE, p.fechaInicio, p.fechaFin)) as 'tiempo de juego (minutos)'
@@ -191,8 +198,8 @@ select top 10  u.nickname, SUM(datediff(MINUTE, p.fechaInicio, p.fechaFin)) as '
 		inner join Conexion c on (c.idUsuario = u.idUsuario)
 		inner join DetallePartida dp on (dp.idAsesino = u.idUsuario)
 		inner join Partida p on (p.idPartida = dp.idPartida)
-	group by u.nickname
-	order by SUM(datediff(MINUTE, p.fechaInicio, p.fechaFin)) desc
+group by u.nickname
+order by SUM(datediff(MINUTE, p.fechaInicio, p.fechaFin)) desc
 
 
 --15. Ranking de jugadores según su K/D por rango de edad (13 a 15, 16 a 20, 21 a 25, 26 a 30 y mayores de 30)
@@ -224,3 +231,7 @@ GROUP BY
 	kd.killDeathRatio
 ORDER BY 
     rangoEdad ASC, kd.killDeathRatio DESC
+
+
+
+	
