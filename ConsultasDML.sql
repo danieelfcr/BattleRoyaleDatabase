@@ -165,7 +165,20 @@ deallocate c_partidas
 
 
 --11. Cantidad de partidas en las que el ganador tenga 0 kills y algún jugador tenga 10 o más kills
-
+SELECT COUNT(*) as CantidadPartidas
+FROM Partida
+WHERE idGanador NOT IN (
+    SELECT DISTINCT idAsesino
+    FROM DetallePartida
+    WHERE idPartida = Partida.idPartida
+)
+AND EXISTS (
+    SELECT *
+    FROM DetallePartida
+    WHERE idPartida = Partida.idPartida
+    GROUP BY idPartida, idAsesino
+    HAVING COUNT(*) >= 10
+)
 
 
 --12. Listado de cosméticos ordenados por tipo, categoría y cantidad de partidas ganadas 
