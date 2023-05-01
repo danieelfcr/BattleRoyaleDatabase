@@ -169,7 +169,18 @@ deallocate c_partidas
 
 
 --12. Listado de cosméticos ordenados por tipo, categoría y cantidad de partidas ganadas 
+----JOINS en tablas: Cosmetico, TipoCosmetico, CategoriaCosmetico, UsuarioCosmetico y Partida
 
+SELECT TC.nombre AS tipo_cosmetico, CC.nombre AS categoria_cosmetico, C.nombre AS nombre_cosmetico, COUNT(*) AS partidas_ganadas
+FROM Cosmetico_ C
+INNER JOIN TipoCosmetico_ TC ON C.idTipoCosmetico = TC.idTipoCosmetico
+INNER JOIN CategoriaCosmetico_ CC ON C.idCategoriaCosmetico = CC.idCategoriaCosmetico
+INNER JOIN UsuarioCosmetico_ UC ON C.idCosmetico = UC.idCosmetico
+INNER JOIN DetalleCosmeticoPartida_ DCP ON UC.idUsuarioCosmetico = DCP.idUsuarioCosmetico
+INNER JOIN Partida_ P ON DCP.idPartida = P.idPartida
+WHERE P.idGanador = DCP.idUsuario
+GROUP BY TC.nombre, CC.nombre, C.nombre
+ORDER BY TC.nombre, CC.nombre, COUNT(*) DESC
 --13. Cantidad de partidas por tiempo de duración en minutos
 
 --14. Top 10 jugadores con más tiempo de juego
